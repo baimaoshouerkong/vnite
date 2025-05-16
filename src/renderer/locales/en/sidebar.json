@@ -1,0 +1,37 @@
+{
+  "title": "vnite",
+  "navigation": {
+    "library": "Game Library",
+    "records": "Records",
+    "scanner": "Scanner",
+    "transformer": "Transformer"
+  },
+  "actions": {
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "cloudSyncDisabled": "Cloud Sync Disabled",
+    "addGame": "Add Game",
+    "settings": "Settings"
+  },
+  "adder": {
+    "addGame": "Add Game",
+    "addSingle": "Add Single",
+    "addBatch": "Add Batch",
+    "addCustom": "Add Custom",
+    "addScanner": "Add Scanner",
+    "importFromThirdParty": "Import from Third Party",
+    "steam": "Steam"
+  },
+  "notifications": {
+    "noGamesFound": "No games found",
+    "gettingBatchGames": "Getting games in batch…",
+    "getBatchGamesFailed": "Failed to get games in batch: ",
+    "getBatchGamesSuccess": "Successfully got games in batch",
+    "unknownError": "Unknown error",
+    "selectLibraryFolder": "Please select library folder…",
+    "selectGamePath": "Please select game path",
+    "adding": "Adding game…",
+    "addSuccess": "Successfully added game",
+    "addError": "Error adding game"
+  }
+}

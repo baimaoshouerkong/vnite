@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.timero.xyz/i/2024/08/19/66c30441f1841.ico" alt="cover">
+  <img src="https://img.timero.xyz/i/2024/12/09/67569c2a322be.png" alt="cover" width="60%">
 </p>
 
 <p align="center">
@@ -10,72 +10,80 @@
 
 # Vnite
 
-Vnite 是一个 视觉小说 / Galgame 管理软件。
+[English](README.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [Русский](README.ru.md) 
 
-支持以Github为核心的账号系统，可进行游戏元数据与存档的多端云同步（需要用户安装Git，仍不稳定）。
+Vnite is a versatile game management software designed to provide a unified interface for recording, managing, and synchronizing your gaming journey.
 
-内置基本的统计模块，默默记录你的游戏之旅。
+## ✨ Features
 
-用户界面模仿了 Steam，给仓鼠党一个赏心悦目的海报墙。
+- Modern user interface (with customizable themes)
 
-## ✨ 功能
+- Real-time cloud synchronization for all game records, saves, and settings across multiple devices
 
-- 🔎 完善的 视觉小说 / Galgame 元数据刮削器
+- Support for multiple data sources (Steam, IGDB, Bangumi, VNDB, YMGal, DLsite)
 
-- 📺 现代化的用户界面
+- Supports automatic game library integration, each scanner can customize folder structure and data sources
 
-- 👾 简单易用的批量刮削器
+- Flexible metadata transformer, supports regex modification, replacement, merging, and exclusion of any metadata
 
-- 🗂️ 直观的游戏分类逻辑
+- Detailed reporting functionality, including annual, monthly, and weekly reports to review your gaming journey
 
-- 🔗 基于 Github 的账号系统（仍不稳定）
+- Integration with other programs (such as one-click LE region switching, automatic Magpie scaling, emulator launching, etc.)
 
-- ☁️ 所有游戏数据，设置均可多端云同步（仍不稳定）
+- One-click import from Steam library (preserving game time)
 
-- ⏳ 专为 中文化 视觉小说 / Galgame 优化的计时器
+- Multiple launch methods (files, links, scripts), with high customizability and preset configurations
 
-- 🕹️ 可为游戏单独设置LE转区启动
+- Dynamic categorization (by developer, tags, etc.)
 
-- 📤 数据与程序完全分离，便于备份和自定义
+- Powerful filters with support for custom metadata fields
 
-## 📸 截图
+- Session-based timer, supporting recording for individual files or folders
 
-![screenshot_1](https://img.timero.xyz/i/2024/10/06/6701f06e89465.webp)
+- Support for launching games via system links
 
-![screenshot_2](https://img.timero.xyz/i/2024/10/06/6701f0d3b6a22.webp)
+- Complete separation of data and program for easy backup and customization
 
-![screenshot_3](https://img.timero.xyz/i/2024/10/06/6701f0e87b7f2.webp)
+## 📸 Screenshots
 
-![screenshot_4](https://img.timero.xyz/i/2024/10/06/6701f0b7d964b.webp)
+![gameDetail](https://img.timero.xyz/i/2025/05/05/68187c3701c64.webp)
 
-## 💡 计划中
+![home](https://img.timero.xyz/i/2025/05/05/68187c440f098.webp)
 
-- 完善统计模块
+![gameRecord](https://img.timero.xyz/i/2025/05/05/68187c50ceb6e.webp)
 
-- 支持更多游戏类型
+![gameSave](https://img.timero.xyz/i/2025/05/05/68187c5f8d297.webp)
 
-- 搭建自有账号系统
+![recordOverview](https://img.timero.xyz/i/2025/05/05/68187c7179b6c.webp)
 
-- 完善WebDav同步系统
+![recordWeekly](https://img.timero.xyz/i/2025/05/05/68187c7e66fdd.webp)
 
-## ⚠️ 注意
+![recordMonthly](https://img.timero.xyz/i/2025/05/05/68187c88eb75b.webp)
 
-- 由于本人是第一次写项目，所以项目的源代码基本处于一个shit的状态，还望大家海涵🙏
+![recordYearly](https://img.timero.xyz/i/2025/05/05/68187c95324c9.webp)
 
-- 项目还处于早期开发阶段，可能会有破坏性更改与多样化的bug，还望大家多在issue中提出
+![scoreReport](https://img.timero.xyz/i/2025/05/05/68187c9f86b48.webp)
 
-- 由于大陆地区网络问题，Github云同步功能需要科学上网后才能使用
+## 💡 Planned Features
 
-- 每次更新后都需要重新登录Github开启云同步功能，否则会报错，未来会修复
+- Self-built data source
 
-## ☎️ 联系我
+## 🌏 Internationalization
+
+The internationalization work of Vnite is hosted on [Weblate](https://hosted.weblate.org/projects/vnite/), and your participation is welcome.
+
+<a href="https://hosted.weblate.org/engage/vnite/">
+<img src="https://hosted.weblate.org/widget/vnite/multi-auto.svg" alt="translation-status" />
+</a>
+
+## ☎️ Contact Me
 
 - [Twitter](https://x.com/ximu3_)
-- [Telegram群组](https://t.me/+d65-R_xRx1JlYWZh)
+- [Telegram Group](https://t.me/+d65-R_xRx1JlYWZh)
 
-## 致谢
+## ⭐ Acknowledgements
 
-- [月幕Galgame-开放API](https://www.ymgal.games/developer)
 - [VNDB API](https://api.vndb.org/kana)
-- ……
-
+- [Steam API](https://partner.steamgames.com/doc/api)
+- [YMGal API](https://www.ymgal.games/developer)
+- ...

@@ -1,0 +1,115 @@
+{
+  "title": "游戏扫描器管理",
+  "status": {
+    "idle": "空闲",
+    "scanning": "扫描中",
+    "paused": "已暂停",
+    "completed": "已完成",
+    "error": "出错",
+    "unknown": "未知"
+  },
+  "metrics": {
+    "scanners": "{{count}} 个扫描器",
+    "games": "{{count}} 个游戏",
+    "scanInterval": "每 {{minutes}} 分钟扫描",
+    "failures": "{{count}}个失败"
+  },
+  "actions": {
+    "pause": "暂停",
+    "resume": "继续",
+    "scanAll": "扫描全部",
+    "stop": "停止",
+    "globalSettings": "全局设置",
+    "addDirectory": "添加扫描目录",
+    "cancel": "取消",
+    "save": "保存",
+    "confirmDelete": "确认删除",
+    "fix": "修复",
+    "ignore": "忽略",
+    "back": "返回",
+    "close": "关闭",
+    "browse": "浏览"
+  },
+  "list": {
+    "title": "扫描目录列表",
+    "empty": {
+      "title": "暂无扫描目录",
+      "description": "添加扫描目录来自动管理您的游戏库"
+    },
+    "item": {
+      "dataSource": "{{name}} 数据",
+      "depth": "{{level}} 深度",
+      "progress": "{{percentage}}% 完成",
+      "games": "{{count}} 个游戏",
+      "statusLabels": {
+        "idle": "空闲",
+        "scanning": "扫描中",
+        "paused": "已暂停",
+        "completed": "已完成",
+        "error": "错误",
+        "unknown": "未知"
+      },
+      "deleteDialog": {
+        "title": "确认删除",
+        "description": "确定要删除扫描目录\"{{path}}\"吗？此操作无法撤销。",
+        "cancel": "取消",
+        "confirm": "确认删除"
+      }
+    }
+  },
+  "notifications": {
+    "fixAttempt": "尝试获取游戏中",
+    "fixSuccess": "修复成功",
+    "fixError": "修复失败",
+    "createError": "创建扫描器失败",
+    "intervalTooShort": "扫描间隔时间不能小于5分钟",
+    "scanStopping": "正在停止扫描…",
+    "scanStopped": "扫描已停止"
+  },
+  "errors": {
+    "fixFolder": "修复文件夹失败:",
+    "createScanner": "创建扫描器失败:"
+  },
+  "globalSettings": {
+    "title": "全局扫描器设置",
+    "scanInterval": "扫描间隔",
+    "scanIntervalTooltip": "所有扫描器的扫描间隔时间，单位为分钟",
+    "ignoreList": "排除列表",
+    "ignoreListPlaceholder": "输入排除的文件夹名，支持正则表达式",
+    "ignoreListTooltip": "支持正则表达式，每行一个"
+  },
+  "dataSources": {
+    "steam": "Steam",
+    "vndb": "VNDB",
+    "bangumi": "Bangumi",
+    "ymgal": "YMGal",
+    "igdb": "IGDB",
+    "dlsite": "DLsite"
+  },
+  "failedFolders": {
+    "title": "处理失败的文件夹",
+    "fixing": "修复: {{name}}",
+    "dataSource": "数据源:",
+    "dataSourceId": "数据源ID:",
+    "inputPlaceholder": "输入游戏ID",
+    "helpText": "请直接输入数据源对应的游戏ID，例如Steam游戏的AppID",
+    "selectPlaceholder": "选择数据源",
+    "table": {
+      "folderName": "文件夹名",
+      "location": "位置",
+      "error": "错误",
+      "actions": "操作"
+    }
+  },
+  "editScanner": {
+    "addTitle": "添加扫描目录",
+    "editTitle": "编辑扫描目录",
+    "path": "路径",
+    "dataSource": "数据源",
+    "scanDepth": "扫描深度",
+    "pathPlaceholder": "选择游戏扫描目录",
+    "dataSourcePlaceholder": "选择数据源",
+    "depthPlaceholder": "选择扫描深度",
+    "depthTooltip": "设置文件夹扫描的深度层级"
+  }
+}

@@ -3,47 +3,61 @@
 layout: home
 
 hero:
-  name: "Vnite"
-  text: "视觉小说管理器"
-  tagline: 简单，强大，有点萌。
+  name: 'Vnite'
+  text: 'Versatile Game Manager'
+  tagline: Record, manage, and synchronize your gaming journey.
   image:
-    src: /logo.png
+    src: /icon.png
     alt: Vnite
   actions:
     - theme: brand
-      text: 下载
+      text: Download
       link: https://github.com/ximu3/vnite/releases
     - theme: alt
-      text: 软件指南
+      text: Guide
       link: /guide/what-is-vnite
 
 features:
-  - title: 多端云同步
-    icon: ☁️
-    details: 基于Github，所有游戏数据，存档，设置均可多端云同步。
-  - title: 现代化界面
+  - title: Modern Interface
     icon: 📺
-    details: Vnite模仿了Steam，有着现代化、美观的用户界面。
-  - title: 自动扫描
-    icon: 👾
-    details: 简单可靠易用的批量刮削器，可以自动识别库中的游戏并添加至Vnite。
-  - title: 刮削器
+    details: Developed with Shadcn UI, beautiful, elegant, and supports custom themes
+  - title: Multi-device Cloud Sync
+    icon: ☁️
+    details: Based on CouchDB, all game records, saves, and settings can be synchronized in real-time across multiple devices
+  - title: Scraper
     icon: 🔎
-    details: 支持模糊刮削和精准刮削，混合vndb和ymgal以提供更完备的元数据。
-  - title: 计时器
-    icon: ⏳
-    details: 专为中文化视觉小说优化的计时器，支持程序跳转，bat文件等形式启动游戏。
-  - title: 联动
+    details: Supports multiple data sources (Steam, IGDB, Bangumi, VNDB, YMGal, DLsite)
+  - title: Metadata Transformer
+    icon: 🔄
+    details: Flexible metadata transformer supporting regex modifications, replacement, merging, and exclusion of any metadata
+  - title: Automatic Import
+    icon: 🧲
+    details: Supports automatic game importing, each scanner can customize folder structures and data sources
+  - title: One-click Import
+    icon: 🔌
+    details: Supports one-click import of your Steam library (preserving play time)
+  - title: Game Reports
+    icon: 📃
+    details: Provides detailed reporting features, supports annual, monthly, and weekly reports for reviewing your gaming journey
+  - title: Advanced Launcher
+    icon: 👾
+    details: Diverse launch methods (file, link, script), supporting highly customizable and preset configurations
+  - title: Records
+    icon: 🎛️
+    details: Powerful filters, supports custom metadata fields
+  - title: Integration
     icon: 🕹️
-    details: 联动第三方软件，如Locale Emulator等，可为游戏单独设置LE转区启动等。
-  - title: 数据分离
-    icon: 📤
-    details: 数据与程序完全分离，支持数据库导入导出，便于备份和自定义。
-  - title: 记录
-    icon: ✒️
-    details: 内置基本的统计模块，默默记录你的游戏之旅，储存那段时间。
-  - title: 账号系统
+    details: Supports integration with other programs (such as one-click LE region switching, automatic Magpie scaling, emulator launching, etc.)
+  - title: Timer
+    icon: ⏳
+    details: Per-session timer, supports recording for individual files or folders
+  - title: Quick Launch
     icon: 🔗
-    details: 基于 Github 的账号系统（仍不稳定），登录即可同步所有数据。
+    details: Supports system link wake-up to launch Vnite and start games
+  - title: Dynamic Classification
+    icon: 🗂️
+    details: Supports dynamic classification (by developer, tag, category, etc.), making it easy to find games
+  - title: Data Separation
+    icon: 📤
+    details: Complete separation of data and program, supports database import/export for easy backup and customization
 ---
-

@@ -1,31 +1,44 @@
-# 元数据
+# Metadata
 
-游戏的所有元数据均可被修改，并且大多提供了直观易用的修改方法。Vnite 还提供了直观的数据库修改方法，用户可直接修改对应游戏的数据库来自定义元数据。
+All metadata of games can be modified, with media, descriptions, and tags supporting web scraping.
 
-## 基本
+Vnite also supports custom metadata fields. You can attach custom key-value pairs to any game, and Vnite will automatically integrate the keys into the filter.
 
-游戏的基本元数据，如标题、简介、背景图、封面、游玩时间、游玩状态、路径等均可在游戏设置页中修改。
+## Basic
 
-![metadata_1](https://img.timero.xyz/i/2024/10/06/670201c88a1e1.webp)
+The basic metadata of games, such as description, basic information, related websites, tags, etc., can be modified in the game overview page.
 
-![metadata_2](https://img.timero.xyz/i/2024/10/06/670201f9850ff.webp)
+![metadata1](https://img.timero.xyz/i/2025/04/02/67ecf9c4cf46c.webp)
 
-![metadata_3](https://img.timero.xyz/i/2024/10/06/6702020fecd4b.webp)
+![metadata2](https://img.timero.xyz/i/2025/04/02/67ecf9d227fea.webp)
 
-![metadata_4](https://img.timero.xyz/i/2024/10/06/6702022a1b141.webp)
+![metadata3](https://img.timero.xyz/i/2025/04/02/67ecf9dd33a9f.webp)
 
-## 角色
+![metadata4](https://img.timero.xyz/i/2025/04/02/67ecf9e76de5b.webp)
 
-角色的元数据可在角色页面修改，除了相关链接未提供直观的修改方法外，其它元数据均可轻松修改。
+> [!TIP]
+> Descriptions and tags support web scraping
 
-![metadata_5](https://img.timero.xyz/i/2024/10/06/670203ab026e8.webp)
+![metadata5](https://img.timero.xyz/i/2025/04/02/67ecfa00231af.webp)
 
-## 高级
+![metadata6](https://img.timero.xyz/i/2025/04/02/67ecfa132947c.webp)
 
-Vnite 提供了修改数据库的方法来供用户高度自定义元数据，可在 `游戏-设置-数据库` 中修改。
+## Media
 
-> [!CAUTION]
-> 随意修改数据库内容可能会导致程序崩溃！请清楚数据库各项的意义与格式后再进行修改！
+The game's icon, background image, and cover can be modified in `Game-Settings-Properties-Media`, supporting web scraping, cropping, and other operations.
 
-![metadata_6](https://img.timero.xyz/i/2024/10/06/670204a6616d0.webp)
+> [!TIP]
+> When modifying the game icon, you can select an executable file, and Vnite will automatically retrieve and store the icon of that file
 
+![media1](https://img.timero.xyz/i/2025/04/02/67ecfbdebec58.webp)
+
+![media2](https://img.timero.xyz/i/2025/04/02/67ecfbfb89950.webp)
+
+![media3](https://img.timero.xyz/i/2025/04/02/67ecfc0c64ea4.webp)
+
+## Game Time and Name
+
+Game time and name can be modified in `Game-Settings`.
+
+> [!IMPORTANT]
+> Modifying game time will cause it to be out of sync with the session-based timer data

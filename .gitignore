@@ -2,5 +2,11 @@ node_modules
 dist
 out
 .DS_Store
+.eslintcache
 *.log*
-src/renderer/public
+data
+.env
+.env.local
+.env.*.local
+app
+dev

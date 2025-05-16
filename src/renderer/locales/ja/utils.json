@@ -1,0 +1,71 @@
+{
+  "common": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認"
+  },
+  "hotkeySetting": {
+    "title": "ホットキーの設定",
+    "recording": "[ホットキーを押してください…]",
+    "placeholder": "ホットキーを入力または記録、例: ctrl+a+b",
+    "startRecordButton": "クリックして記録開始",
+    "recordingButton": "記録中…",
+    "currentKeys": "現在押されているキー",
+    "supportedKeys": "サポートされているキーには、文字、数字、矢印キー、Esc、Tab、Enter、Spaceなどが含まれ、複数のキーを組み合わせて使用できます",
+    "errors": {
+      "invalidHotkey": "有効なホットキーを入力してください",
+      "duplicateKeys": "ホットキーに重複したキーを含めることはできません"
+    },
+    "notifications": {
+      "hotkeyUpdated": "ホットキーが更新されました"
+    }
+  },
+  "arrayEditor": {
+    "clickPlusToAdd": "+ をクリックして要素を追加",
+    "addElement": "要素を追加",
+    "editElement": "要素を編集",
+    "enterElement": "要素を入力",
+    "add": "追加",
+    "update": "更新"
+  },
+  "clipboard": {
+    "copied": "クリップボードにコピーしました",
+    "copyError": "クリップボードへのテキストのコピーに失敗しました: {{error}}"
+  },
+  "game": {
+    "stopping": {
+      "loading": "ゲームを停止中…",
+      "success": "ゲームを停止しました",
+      "error": "ゲームの停止に失敗しました: {{message}}"
+    },
+    "starting": {
+      "pathRequired": "先にゲームパスを設定してください",
+      "configuringLauncher": "ランチャーを設定中…",
+      "configSuccess": "ランチャーの設定に成功しました",
+      "configError": "設定エラー: {{message}}",
+      "runtimeError": "実行設定エラー、ご確認ください！"
+    },
+    "playStatus": {
+      "unplayed": "未プレイ",
+      "playing": "プレイ中",
+      "finished": "完了",
+      "multiple": "複数周回",
+      "shelved": "保留中",
+      "unknown": "不明状態"
+    }
+  },
+  "format": {
+    "gameTime": "{{time, gameTime}}",
+    "niceDate": "{{date, niceDate}}",
+    "niceISO": "{{date, niceISO}}"
+  },
+  "notifications": {
+    "gameExiting": "ゲームを終了しています…",
+    "gameExited": "ゲームが終了しました",
+    "fullSyncing": "データを同期しています…",
+    "fullSynced": "データ同期が完了しました",
+    "fullSyncError": "データ同期に失敗しました",
+    "updateUserInfoError": "公式クラウド同期アカウントのログインが期限切れです。再度ログインしてください",
+    "checkingForUpdate": "更新を確認中…"
+  }
+}

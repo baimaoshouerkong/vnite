@@ -1,39 +1,59 @@
-# Vnite 是什么？
+# What is Vnite?
 
-Vnite 是一个 视觉小说 / Galgame 管理软件，旨在为玩家提供统一的用户界面来管理、启动、记录本地的视觉小说。
+Vnite is a versatile game management software designed to provide a unified user interface for recording, managing, and synchronizing your gaming journey.
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-只是想尝试一下？跳到[快速开始](./getting-started)。
+Just want to try it out? Jump to [Getting Started](./getting-started).
 
 </div>
 
-## 功能
+## Features
 
-- 完善的 视觉小说 / Galgame 元数据刮削器
+- Modern user interface (with customizable themes)
 
-- 现代化的用户界面
+- Real-time cloud synchronization for all game records, saves, and settings across multiple devices
 
-- 简单易用的批量刮削器
+- Support for multiple data sources (Steam, IGDB, Bangumi, VNDB, YMGal, DLsite)
 
-- 直观的游戏分类逻辑
+- Supports automatic game library integration, each scanner can customize folder structure and data sources
 
-- 基于 Github 的账号系统
+- Flexible metadata transformer, supports regex modification, replacement, merging, and exclusion of any metadata
 
-- 所有游戏数据，设置均可多端云同步
+- Detailed reporting functionality, including annual, monthly, and weekly reports to review your gaming journey
 
-- 专为 中文化 视觉小说 / Galgame 优化的计时器
+- Integration with other programs (such as one-click LE region switching, automatic Magpie scaling, emulator launching, etc.)
 
-- 可为游戏单独设置LE转区启动
+- One-click import from Steam library (preserving game time)
 
-- 数据与程序完全分离，便于备份和自定义
+- Multiple launch methods (files, links, scripts), with high customizability and preset configurations
 
-## 预览
+- Dynamic categorization (by developer, tags, etc.)
 
-![screenshot_1](https://img.timero.xyz/i/2024/10/06/6701f06e89465.webp)
+- Powerful filters with support for custom metadata fields
 
-![screenshot_2](https://img.timero.xyz/i/2024/10/06/6701f0d3b6a22.webp)
+- Session-based timer, supporting recording for individual files or folders
 
-![screenshot_3](https://img.timero.xyz/i/2024/10/06/6701f0e87b7f2.webp)
+- Support for launching games via system links
 
-![screenshot_4](https://img.timero.xyz/i/2024/10/06/6701f0b7d964b.webp)
+- Complete separation of data and program for easy backup and customization
+
+## Preview
+
+![gameDetail](https://img.timero.xyz/i/2025/05/05/68187c3701c64.webp)
+
+![home](https://img.timero.xyz/i/2025/05/05/68187c440f098.webp)
+
+![gameRecord](https://img.timero.xyz/i/2025/05/05/68187c50ceb6e.webp)
+
+![gameSave](https://img.timero.xyz/i/2025/05/05/68187c5f8d297.webp)
+
+![recordOverview](https://img.timero.xyz/i/2025/05/05/68187c7179b6c.webp)
+
+![recordWeekly](https://img.timero.xyz/i/2025/05/05/68187c7e66fdd.webp)
+
+![recordMonthly](https://img.timero.xyz/i/2025/05/05/68187c88eb75b.webp)
+
+![recordYearly](https://img.timero.xyz/i/2025/05/05/68187c95324c9.webp)
+
+![scoreReport](https://img.timero.xyz/i/2025/05/05/68187c9f86b48.webp)

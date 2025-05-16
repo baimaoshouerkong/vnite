@@ -1,43 +1,42 @@
-# 快速开始
+# Quick Start
 
-## 支持平台
+## Supported Platforms
 
-目前 Vnite 只支持 Windows 平台，后续可能会支持 Android、iOS 等移动平台来远程串流 Windows 上的游戏，敬请期待。
+Currently, Vnite only supports Windows platform. In the future, it may support mobile platforms such as Android and iOS for remote streaming of games on Windows. Stay tuned.
 
-## 下载并安装
+## Download and Install
 
-Vnite 托管于 Github，所有的版本更新都以 release 形式发布，可在此处获取最新的安装包。
+Vnite is hosted on Github, and all version updates are published in the form of releases. You can get the latest installation package here.
 
 - https://github.com/ximu3/vnite/releases
 
-## 导入游戏
+## Adding Games
 
-Vnite 目前支持三种导入方式。
+Vnite currently supports three ways to add games.
 
-1. 批量添加
-2. 单个添加
-3. 自定义添加
+1. Using scraper - Add single game (Requirement: Can be recognized by scraper)
+2. Using scraper - Batch add (Requirements: Can be recognized by scraper, game exists locally)
+3. Without using scraper (Requirement: Game exists locally)
 
-其中方法 1 和 3 需要电脑本地存在该游戏，方法 1 和 2 需要该游戏可被刮削器识别。
+### Add Single Game
 
-### 批量添加
+Single addition supports fuzzy search and precise scraping. The language support and accuracy of fuzzy search are determined by the data source. Precise scraping requires the `Game ID` from the `corresponding data source`.
 
-选择一个库文件夹，Vnite 会读取所有一级子文件夹名作为游戏原名，用户可修改并附加 gid、vid 来提高刮削准确性。每个游戏刮削进程独立，用户可对刮削失败的游戏进行调整和重试。
+![gameSingleAdder1](https://img.timero.xyz/i/2025/04/02/67ecf19c18a3c.webp)
 
->[!TIP]
->批量添加时用户无法选择背景图，默认使用第一张。
+![gameSingleAdder2](https://img.timero.xyz/i/2025/04/02/67ecf1b1b35d8.webp)
 
-![batch_add](https://img.timero.xyz/i/2024/10/06/67022a28eec1f.webp)
+![gameSingleAdder3](https://img.timero.xyz/i/2025/04/02/67ecf1c222240.webp)
 
-### 单个添加
+### Batch Add
 
-单个添加支持模糊搜索和精准刮削，模糊搜索支持日文名、中文名、别名。精准刮削需提供 gid 和 vid。
+Select a library folder, and Vnite will read all first-level subfolder names as the original game names. Users can modify and attach the `Game ID` from the `corresponding data source` to improve scraping accuracy. Each game's scraping process is independent, and users can adjust and retry for games that fail to scrape.
 
-![single_add_1](https://img.timero.xyz/i/2024/10/06/6701fa2c20966.webp)
+> [!TIP]
+> When batch adding, users cannot select background images; the first one is used by default.
 
-![single_add_2](https://img.timero.xyz/i/2024/10/06/6701fa5da6454.webp)
+![gameBatchAdder](https://img.timero.xyz/i/2025/04/02/67ecf1ec53201.webp)
 
-### 自定义添加
+### Custom Add
 
-直接将游戏启动程序拖入 Vnite 中即可完成添加，后续可自定义元数据或重新刮削。
-
+Simply select the executable file path to complete the addition. You can customize metadata or re-scrape later.
