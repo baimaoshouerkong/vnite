@@ -1,4 +1,4 @@
-import React, { useState, ImgHTMLAttributes } from 'react'
+import React, { ImgHTMLAttributes, useState } from 'react'
 import { useAttachmentStore } from '~/stores'
 import { cn } from '~/utils'
 
@@ -9,6 +9,7 @@ interface GameImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'
   fallback?: React.ReactNode
   shadow?: boolean
   flips?: boolean
+  blur?: boolean
 }
 
 export const GameImage: React.FC<GameImageProps> = ({
@@ -20,6 +21,7 @@ export const GameImage: React.FC<GameImageProps> = ({
   fallback = <div>No Pictures</div>,
   shadow = false,
   flips = false,
+  blur = false,
   ...imgProps
 }) => {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -37,7 +39,7 @@ export const GameImage: React.FC<GameImageProps> = ({
   }
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative overflow-hidden', className)}>
       {!isLoaded && (
         <div className={cn('absolute inset-0', className?.includes('rounded') && 'rounded-lg')} />
       )}
@@ -46,12 +48,13 @@ export const GameImage: React.FC<GameImageProps> = ({
         className={cn(
           'transition-opacity duration-300',
           shadow && 'shadow-md shadow-black/50',
-          isLoaded ? 'opacity-100' : 'opacity-0',
+          // isLoaded ? 'opacity-100' : 'opacity-0',
           flips && '-scale-y-100',
+          blur && 'filter blur-xl',
           className
         )}
-        loading="lazy"
-        decoding="async"
+        // loading="lazy"
+        // decoding="async"
         onLoad={() => {
           setIsLoaded(true)
           onUpdated?.()

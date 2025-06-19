@@ -1,15 +1,20 @@
-import { cn } from '~/utils'
 import { Button } from '@ui/button'
-import { useConfigState } from '~/hooks'
-import { sortGames } from '~/stores/game'
-import { GamePoster } from './posters/GamePoster'
-import { BigGamePoster } from './posters/BigGamePoster'
-import { useRef } from 'react'
 import { throttle } from 'lodash'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useConfigState } from '~/hooks'
+import { getGameStore, sortGames } from '~/stores/game'
+import { cn } from '~/utils'
+import { BigGamePoster } from './posters/BigGamePoster'
+import { GamePoster } from './posters/GamePoster'
 
 export function RecentGames(): JSX.Element {
-  const games = sortGames('record.lastRunDate', 'desc').slice(0, 15)
+  const games = sortGames('record.lastRunDate', 'desc')
+    .slice(0, 15)
+    .filter((id) => {
+      const date = getGameStore(id).getState().getValue('record.lastRunDate')
+      return date && date !== ''
+    })
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showRecentGamesInGameList] = useConfigState('game.gameList.showRecentGames')
 
@@ -24,9 +29,9 @@ export function RecentGames(): JSX.Element {
   }, 750)
   const { t } = useTranslation('game')
   return (
-    <div className={cn('w-full flex flex-col gap-1 pt-3')}>
+    <div className={cn('w-full flex flex-col gap-1')}>
       <div className={cn('flex flex-row items-center gap-5 justify-center pl-5')}>
-        <div className={cn('text-accent-foreground flex-shrink-0')}>
+        <div className={cn('text-accent-foreground select-none flex-shrink-0')}>
           {t('showcase.sections.recentGames')}
         </div>
 
@@ -60,10 +65,13 @@ export function RecentGames(): JSX.Element {
         className={cn(
           'flex flex-row gap-6 grow',
           'w-full overflow-x-auto scrollbar-none scroll-smooth',
-          'pt-2 pb-6 pl-5 pr-5' // Add inner margins to show shadows
+          'pt-3 pb-6 pl-5 pr-5' // Add inner margins to show shadows
         )}
       >
         {/* The wrapper ensures that each Poster maintains a fixed width */}
+        {games.length === 0 && (
+          <div className="text-muted-foreground text-sm">{t('list.recent.empty')}</div>
+        )}
         {games.map((game, index) =>
           index === 0 ? (
             <div

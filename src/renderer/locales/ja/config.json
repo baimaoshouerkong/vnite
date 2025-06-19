@@ -11,7 +11,8 @@
     "closeMainPanel": "メインパネルを閉じる",
     "action": "アクション",
     "quitApp": "vniteを終了",
-    "minimizeToTray": "トレイに最小化"
+    "minimizeToTray": "トレイに最小化",
+    "hideWindowAfterGameStart": "ゲーム起動後にトレイに最小化する"
   },
   "appearances": {
     "title": "外観",
@@ -22,6 +23,10 @@
       "selectImage": "画像を選択",
       "currentBackground": "現在の背景画像",
       "noBackground": "背景画像が設定されていません"
+    },
+    "showcase": {
+      "title": "ポスターボード",
+      "showPlayButtonOnPoster": "ポスターにプレイボタンを表示"
     },
     "glass": {
       "title": "フロストガラス",
@@ -41,7 +46,8 @@
     },
     "sidebar": {
       "title": "サイドバー",
-      "showThemeSwitcher": "テーマ切り替えボタンを表示"
+      "showThemeSwitcher": "テーマ切り替えボタンを表示",
+      "showNSFWBlurSwitcher": "NSFW コンテンツのスイッチャーを表示"
     }
   },
   "advanced": {

@@ -29,6 +29,7 @@ import {
   TrayManager
 } from './utils'
 import { GameScannerManager } from './adder/scanner'
+import { cleanupPowerShell } from './utils/powershell'
 
 let mainWindow: BrowserWindow
 let splashWindow: BrowserWindow | null
@@ -74,7 +75,7 @@ async function handleGameUrl(url: string): Promise<void> {
 }
 
 function createWindow(): void {
-  const windowSize = calculateWindowSize(0.8, 0.6)
+  const windowSize = calculateWindowSize(0.85, 0.6, 1.62)
 
   const mainWindowState = windowStateKeeper({
     defaultWidth: windowSize.width,
@@ -328,6 +329,33 @@ app.on('window-all-closed', () => {
     // trayManager.destroy()
     app.quit()
   }
+})
+
+// Add cleanup logic before application exit
+app.on('before-quit', () => {
+  // Clean up PowerShell instance
+  cleanupPowerShell()
+
+  // Clean up tray
+  if (trayManager) {
+    trayManager.destroy()
+  }
+})
+
+// Add cleanup on process exit
+process.on('exit', () => {
+  cleanupPowerShell()
+})
+
+// Handle unexpected exits
+process.on('SIGINT', () => {
+  cleanupPowerShell()
+  app.quit()
+})
+
+process.on('SIGTERM', () => {
+  cleanupPowerShell()
+  app.quit()
 })
 
 // In this file you can include the rest of your app"s specific main process

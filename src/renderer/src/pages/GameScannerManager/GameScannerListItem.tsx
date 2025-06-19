@@ -1,8 +1,3 @@
-import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Button } from '@ui/button'
-import { Badge } from '@ui/badge'
-import { Folder, Pencil, Trash2, PlayCircle } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,9 +8,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@ui/alert-dialog'
+import { Badge } from '@ui/badge'
+import { Button } from '@ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@ui/tooltip'
+import { Folder, FolderOpen, Pencil, PlayCircle, Trash2 } from 'lucide-react'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useConfigLocalState } from '~/hooks'
-import { useGameScannerStore } from './store'
 import { cn } from '~/utils'
+import { useGameScannerStore } from './store'
 
 interface GameScannerListItemProps {
   scanner: {
@@ -104,7 +105,7 @@ export const GameScannerListItem: React.FC<GameScannerListItemProps> = ({
   const { variant, label } = getStatusDetails()
 
   return (
-    <div className="relative flex items-center justify-between p-4 overflow-hidden transition-colors hover:bg-muted/20">
+    <div className="relative flex items-center justify-between p-4 overflow-hidden transition-colors">
       {/* Semi-transparent progress bar - only shown when scanning */}
       {isScanning && (
         <div
@@ -117,8 +118,15 @@ export const GameScannerListItem: React.FC<GameScannerListItemProps> = ({
       )}
 
       <div className="z-10 flex items-center flex-grow gap-4 overflow-hidden">
-        <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary/10">
-          <Folder className="w-5 h-5 text-primary" />
+        <div
+          className={cn(
+            'flex items-center justify-center w-10 h-10 rounded-md bg-primary/10 ',
+            'group cursor-pointer hover:bg-primary/20'
+          )}
+          onClick={() => window.api.utils.openPathInExplorer(scanner.path)}
+        >
+          <Folder className="w-5 h-5 text-primary block group-hover:hidden" />
+          <FolderOpen className="w-5 h-5 text-primary hidden group-hover:block" />
         </div>
 
         <div className="flex-grow min-w-0">
@@ -146,31 +154,48 @@ export const GameScannerListItem: React.FC<GameScannerListItemProps> = ({
         <Badge variant={variant}>{label}</Badge>
 
         <div className="flex gap-1 ml-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleScan}
-            disabled={scanProgress.status === 'scanning' || isScanning}
-          >
-            <PlayCircle className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            disabled={scanProgress.status === 'scanning' || isScanning}
-            onClick={onEditClick}
-          >
-            <Pencil className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowDeleteDialog(true)}
-            className="hover:text-destructive"
-            disabled={scanProgress.status === 'scanning' || isScanning}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleScan}
+                disabled={scanProgress.status === 'scanning' || isScanning}
+              >
+                <PlayCircle className="w-4 h-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t('list.item.tooltips.scan')}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="ghost"
+                size="icon"
+                disabled={scanProgress.status === 'scanning' || isScanning}
+                onClick={onEditClick}
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t('list.item.tooltips.edit')}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowDeleteDialog(true)}
+                className="hover:text-destructive"
+                disabled={scanProgress.status === 'scanning' || isScanning}
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t('list.item.tooltips.delete')}</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 

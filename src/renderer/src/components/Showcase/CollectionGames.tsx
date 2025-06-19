@@ -47,7 +47,7 @@ export function CollectionGamesComponent({
 
         const itemWidth = (gridItems[0] as HTMLDivElement).offsetWidth
         const containerStyle = window.getComputedStyle(gridContainer)
-        const minGap = parseFloat(containerStyle.getPropertyValue('gap'))
+        const minGap = parseFloat(containerStyle.getPropertyValue('column-gap'))
         const pL = parseFloat(containerStyle.paddingLeft)
         const pR = parseFloat(containerStyle.paddingRight)
 
@@ -74,11 +74,13 @@ export function CollectionGamesComponent({
 
   return (
     <DragContext.Provider value={{ isDraggingGlobal, setIsDraggingGlobal }}>
-      <div className={cn('flex flex-col gap-3 h-[100vh] pt-[14px] bg-background/50')}>
+      <div className={cn('flex flex-col gap-3 h-[100vh] pt-[50px] bg-background/50')}>
         <ScrollArea className={cn('w-full')}>
           <div className={cn('w-full flex flex-col gap-1 pt-3')}>
             <div className={cn('flex flex-row items-center gap-5 justify-center pl-5')}>
-              <div className={cn('text-accent-foreground flex-shrink-0')}>{collectionName}</div>
+              <div className={cn('text-accent-foreground select-none flex-shrink-0')}>
+                {collectionName}
+              </div>
 
               {/* Split Line Container */}
               <div className={cn('flex items-center justify-center flex-grow')}>
@@ -92,7 +94,7 @@ export function CollectionGamesComponent({
               className={cn(
                 'grid grid-cols-[repeat(auto-fill,148px)]',
                 '3xl:grid-cols-[repeat(auto-fill,176px)]',
-                'justify-between gap-6 w-full',
+                'justify-between gap-6 gap-y-[30px] w-full',
                 'pt-2 pb-6 pl-5 pr-5' // Add inner margins to show shadows
               )}
             >
@@ -121,9 +123,9 @@ export function CollectionGamesComponent({
             </div>
           </div>
         </ScrollArea>
-        {/* This spacer prevents the last row of posters from being cut off 
+        {/* This spacer prevents the last row of posters from being cut off
         and enables downward auto-scrolling when dragging near the bottom. */}
-        <div className="h-10" />
+        <div className="h-5" />
       </div>
     </DragContext.Provider>
   )

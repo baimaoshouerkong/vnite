@@ -18,6 +18,7 @@
   "ruleDialog": {
     "title": "规则设置",
     "loading": "加载中…",
+    "noRules": "暂无规则",
     "categories": {
       "name": "译名",
       "originalName": "原名",
@@ -43,8 +44,11 @@
   },
   "notifications": {
     "applyLoading": "正在应用所有转换器…",
-    "applySuccess": "所有转换器已成功转换",
-    "applyError": "转换所有转换器时出错",
+    "applySuccess": "已成功应用所有转换器",
+    "applyError": "应用所有转换器时出错",
+    "applyOneLoading": "正在应用转换器 \"{{name}}\" …",
+    "applyOneSuccess": "已成功应用转换器 \"{{name}}\"",
+    "applyOneError": "应用转换器 \"{{name}}\" 时出错",
     "presetAdded": "预设已添加",
     "importSuccess": "转换器导入成功",
     "importError": "转换器导入失败",
@@ -71,12 +75,22 @@
     "noResults": "未找到预设"
   },
   "transformerItem": {
-    "rulesCount": "{{count}} 条规则"
+    "rulesCount": "{{count}} 条规则",
+    "tooltips": {
+      "apply": "应用",
+      "edit": "编辑",
+      "export": "导出",
+      "delete": "删除"
+    }
   },
   "presets": {
     "vndbChineseTags": {
       "name": "VNDB 中文标签",
       "note": "将 VNDB 的英文标签转换为中文"
+    },
+    "kanaToLatinDevelopers": {
+      "name": "开发商名称假名转写",
+      "note": "将仅由日文假名构成的开发商名称转换为拉丁字母"
     }
   }
 }

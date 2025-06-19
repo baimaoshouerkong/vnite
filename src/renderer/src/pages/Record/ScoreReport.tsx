@@ -1,13 +1,13 @@
 import { Badge } from '@ui/badge'
 import { Card } from '@ui/card'
 import { GameImage } from '@ui/game-image'
-import { HoverCard, HoverCardContent, HoverCardTrigger, HoverCardPortal } from '@ui/hover-card'
+import { HoverCard, HoverCardContent, HoverCardPortal, HoverCardTrigger } from '@ui/hover-card'
 import { CalendarIcon, ClockIcon, GamepadIcon, Trophy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 
-import { useGameState } from '~/hooks'
+import { useConfigState, useGameState } from '~/hooks'
 import { getGamePlayTime, getGameStore, useGameRegistry } from '~/stores/game'
 import { getGamesByScoreRange } from '~/stores/game/recordUtils'
 import { cn } from '~/utils'
@@ -18,6 +18,8 @@ function GameScoreCard({ gameId }: { gameId: string }): JSX.Element {
   const { gameMetaIndex } = useGameRegistry()
   const gameInfo = gameMetaIndex[gameId] || { name: t('score.gameInfo.unknown') }
   const [score] = useGameState(gameId, 'record.score')
+  const [nsfw] = useGameState(gameId, 'apperance.nsfw')
+  const [enableNSFWBlur] = useConfigState('appearances.enableNSFWBlur')
   const playTime = getGamePlayTime(gameId)
 
   return (
@@ -27,6 +29,7 @@ function GameScoreCard({ gameId }: { gameId: string }): JSX.Element {
           <div className="relative group">
             <GamePoster
               gameId={gameId}
+              blur={nsfw && enableNSFWBlur}
               className={cn(
                 'object-cover rounded-lg shadow-md',
                 'w-[120px] h-[180px] cursor-pointer object-cover',
@@ -41,16 +44,17 @@ function GameScoreCard({ gameId }: { gameId: string }): JSX.Element {
         </div>
       </HoverCardTrigger>
       <HoverCardPortal>
-        <HoverCardContent className="relative rounded-lg w-80" side="right">
+        <HoverCardContent className="relative rounded-lg w-80" side="right" sideOffset={16}>
           <div className="absolute inset-0 rounded-lg">
             <GameImage
               gameId={gameId}
               type="background"
               alt={gameId}
+              blur={nsfw && enableNSFWBlur}
               className="object-cover w-full h-full rounded-lg"
               draggable="false"
             />
-            <div className="absolute inset-0 rounded-lg bg-popover/[0.7] backdrop-blur-xl" />
+            <div className="absolute inset-0 rounded-lg bg-popover/[0.6]" />
           </div>
           <div className="relative flex justify-between space-x-4">
             <div className="flex-1 space-y-1">

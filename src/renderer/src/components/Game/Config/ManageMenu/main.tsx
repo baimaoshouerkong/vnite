@@ -7,12 +7,12 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger
 } from '@ui/dropdown-menu'
-import { toast } from 'sonner'
-import { useGameState, useGameLocalState } from '~/hooks'
-import { useGameAdderStore } from '~/pages/GameAdder/store'
-import { ipcInvoke } from '~/utils'
-import { DeleteGameAlert } from './DeleteGameAlert'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { useGameLocalState, useGameState } from '~/hooks'
+import { useGameAdderStore } from '~/pages/GameAdder/store'
+import { useGameDetailStore } from '../../store'
+import { DeleteGameAlert } from './DeleteGameAlert'
 
 export function ManageMenu({
   gameId,
@@ -27,7 +27,8 @@ export function ManageMenu({
   const [gamePath] = useGameLocalState(gameId, 'path.gamePath')
   const [markPath] = useGameLocalState(gameId, 'utils.markPath')
   const [gameName] = useGameState(gameId, 'metadata.name')
-  const [logoVisible, setLogoVisible] = useGameState(gameId, 'apperance.logo.visible')
+  const [nsfw, setNsfw] = useGameState(gameId, 'apperance.nsfw')
+  const setIsEditingLogo = useGameDetailStore((state) => state.setIsEditingLogo)
   const setIsOpen = useGameAdderStore((state) => state.setIsOpen)
   const setName = useGameAdderStore((state) => state.setName)
   const setDbId = useGameAdderStore((state) => state.setDbId)
@@ -41,17 +42,20 @@ export function ManageMenu({
             <DropdownMenuItem onSelect={openNameEditorDialog}>
               {t('detail.manage.rename')}
             </DropdownMenuItem>
-            {!logoVisible && (
-              <DropdownMenuItem
-                onClick={() => {
-                  setLogoVisible(true)
-                }}
-              >
-                {t('detail.manage.showLogo')}
-              </DropdownMenuItem>
-            )}
+            <DropdownMenuItem
+              onClick={() => {
+                setIsEditingLogo(true)
+              }}
+            >
+              {t('detail.manage.editLogo')}
+            </DropdownMenuItem>
+
             <DropdownMenuItem onClick={openPlayingTimeEditorDialog}>
               {t('detail.manage.editPlayTime')}
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => setNsfw(!nsfw)}>
+              {nsfw ? t('detail.manage.unmarkNSFW') : t('detail.manage.markNSFW')}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -66,11 +70,11 @@ export function ManageMenu({
               <DropdownMenuItem
                 onClick={async () => {
                   try {
-                    const targetPath = await ipcInvoke('select-path-dialog', ['openDirectory'])
+                    const targetPath = await window.api.utils.selectPathDialog(['openDirectory'])
                     if (!targetPath) {
                       return
                     }
-                    await ipcInvoke('create-game-shortcut', gameId, targetPath)
+                    await window.api.utils.createGameShortcut(gameId, targetPath)
                     toast.success(t('detail.manage.notifications.shortcutCreated'))
                   } catch (_error) {
                     toast.error(t('detail.manage.notifications.shortcutError'))
@@ -86,7 +90,7 @@ export function ManageMenu({
                 if (!gamePath && !markPath) {
                   toast.warning(t('detail.manage.notifications.gamePathNotSet'))
                 } else {
-                  ipcInvoke('open-path-in-explorer', gamePath || markPath)
+                  window.api.utils.openPathInExplorer(gamePath || markPath)
                 }
               }}
             >

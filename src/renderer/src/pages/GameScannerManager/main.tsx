@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Badge } from '@ui/badge'
 import { Button } from '@ui/button'
+import { Card } from '@ui/card'
+import { Progress } from '@ui/progress'
+import { ScrollArea } from '@ui/scroll-area'
 import {
-  Folder,
-  RefreshCw,
-  StopCircle,
-  FolderPlus,
   AlertTriangle,
+  Folder,
+  FolderPlus,
   ListFilter,
   Loader2,
-  Settings
+  RefreshCw,
+  Settings,
+  StopCircle
 } from 'lucide-react'
-import { Progress } from '@ui/progress'
-import { Badge } from '@ui/badge'
-import { ScrollArea } from '@ui/scroll-area'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useConfigLocalState } from '~/hooks'
-import { GameScannerListItem } from './GameScannerListItem'
-import { EditScannerDialog } from './EditScannerDialog'
-import { GlobalSettingsDialog } from './GlobalSettingsDialog'
-import { FailedFoldersDialog } from './FailedFoldersDialog'
-import { useGameScannerStore } from './store'
 import { cn } from '~/utils'
+import { EditScannerDialog } from './EditScannerDialog'
+import { FailedFoldersDialog } from './FailedFoldersDialog'
+import { GameScannerListItem } from './GameScannerListItem'
+import { GlobalSettingsDialog } from './GlobalSettingsDialog'
+import { useGameScannerStore } from './store'
 
 export const GameScannerManager: React.FC = () => {
   const { t } = useTranslation('scanner')
@@ -104,8 +105,8 @@ export const GameScannerManager: React.FC = () => {
   const globalInterval = scannerConfig?.interval || 0
 
   return (
-    <div className="flex flex-col w-full h-full shadow-inner bg-background/60">
-      <ScrollArea className="px-6">
+    <div className="flex flex-col w-full h-full bg-background/60">
+      <ScrollArea className="px-6 pt-[20px]">
         <div className="py-[34px]">
           {/* Header title */}
           <div className="flex items-center justify-between mb-4 ">
@@ -114,7 +115,7 @@ export const GameScannerManager: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-4">
             {/* Status card */}
-            <div className="p-4 border rounded-lg bg-card/45">
+            <Card className="p-4 border rounded-lg">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 {/* Left: Status and progress information */}
                 <div className="flex flex-wrap items-center gap-4">
@@ -219,10 +220,10 @@ export const GameScannerManager: React.FC = () => {
                   </Button>
                 </div>
               </div>
-            </div>
+            </Card>
 
             {/* Scanners list and action card */}
-            <div className="flex flex-col flex-grow overflow-hidden border rounded-lg bg-card/45">
+            <Card className="flex flex-col flex-grow border rounded-lg">
               {/* Scanners list title bar */}
               <div className="flex items-center justify-between p-4 border-b bg-muted/45">
                 <div className="text-sm font-medium">{t('list.title')}</div>
@@ -263,7 +264,7 @@ export const GameScannerManager: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Dialog components */}

@@ -3,6 +3,7 @@ export interface configDocs {
     openAtLogin: boolean
     quitToTray: boolean
     language: string
+    hideWindowAfterGameStart: boolean
   }
   game: {
     scraper: {
@@ -56,14 +57,19 @@ export interface configDocs {
   appearances: {
     sidebar: {
       showThemeSwitcher: boolean
+      showNSFWBlurSwitcher: boolean
     }
     background: {
       customBackground: boolean
+    }
+    showcase: {
+      showPlayButtonOnPoster: boolean
     }
     glass: {
       blur: number
       opacity: number
     }
+    enableNSFWBlur: boolean
   }
   hotkeys: {
     library: string
@@ -200,7 +206,8 @@ export const DEFAULT_CONFIG_VALUES: Readonly<configDocs> = {
   general: {
     openAtLogin: false,
     quitToTray: false,
-    language: ''
+    language: '',
+    hideWindowAfterGameStart: true
   },
   game: {
     scraper: {
@@ -238,15 +245,20 @@ export const DEFAULT_CONFIG_VALUES: Readonly<configDocs> = {
   },
   appearances: {
     sidebar: {
-      showThemeSwitcher: true
+      showThemeSwitcher: true,
+      showNSFWBlurSwitcher: true
     },
     background: {
       customBackground: false
     },
+    showcase: {
+      showPlayButtonOnPoster: true
+    },
     glass: {
-      blur: 50,
-      opacity: 0.7
-    }
+      blur: 15,
+      opacity: 0.85
+    },
+    enableNSFWBlur: true
   },
   hotkeys: {
     library: 'ctrl+l',

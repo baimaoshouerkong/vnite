@@ -11,7 +11,8 @@
     "closeMainPanel": "关闭主面板",
     "action": "操作",
     "quitApp": "退出vnite",
-    "minimizeToTray": "最小化到托盘"
+    "minimizeToTray": "最小化到托盘",
+    "hideWindowAfterGameStart": "启动游戏后最小化到托盘"
   },
   "appearances": {
     "title": "外观",
@@ -22,6 +23,10 @@
       "selectImage": "选择图片",
       "currentBackground": "当前背景图片",
       "noBackground": "未设置背景图片"
+    },
+    "showcase": {
+      "title": "海报墙",
+      "showPlayButtonOnPoster": "在海报上显示游玩按钮"
     },
     "glass": {
       "title": "毛玻璃",
@@ -41,7 +46,8 @@
     },
     "sidebar": {
       "title": "侧边栏",
-      "showThemeSwitcher": "显示主题切换按钮"
+      "showThemeSwitcher": "显示主题切换按钮",
+      "showNSFWBlurSwitcher": "显示 NSFW 内容开关"
     }
   },
   "advanced": {
@@ -134,7 +140,7 @@
       "connectDescription": "登录账号以启用云同步功能，获取跨设备同步和数据备份",
       "login": "登录",
       "register": "注册",
-      "logout": "注销",
+      "logout": "登出",
       "adminEdition": "管理员版",
       "developerEdition": "开发者版",
       "premiumEdition": "高级版",

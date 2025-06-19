@@ -9,10 +9,10 @@ import {
   SelectValue
 } from '@ui/select'
 import { Switch } from '@ui/switch'
-import { useConfigState } from '~/hooks'
-import { cn, ipcInvoke } from '~/utils'
-import { useTheme } from '../../components/ThemeProvider'
 import { useTranslation } from 'react-i18next'
+import { useConfigState } from '~/hooks'
+import { cn } from '~/utils'
+import { useTheme } from '../../components/ThemeProvider'
 
 export function General(): JSX.Element {
   const [openAtLogin, setOpenAtLogin] = useConfigState('general.openAtLogin')
@@ -21,20 +21,24 @@ export function General(): JSX.Element {
   const { t } = useTranslation('config')
   const { i18n } = useTranslation()
   const [language, setLanguage] = useConfigState('general.language')
+  const [hideWindowAfterGameStart, setHideWindowAfterGameStart] = useConfigState(
+    'general.hideWindowAfterGameStart'
+  )
 
   const languageOptions = [
     { value: 'zh-CN', label: '简体中文' },
     { value: 'zh-TW', label: '正體中文' },
     { value: 'en', label: 'English' },
     { value: 'ja', label: '日本語' },
-    { value: 'ru', label: 'Русский' } // ← add [teosiq]
+    { value: 'ru', label: 'Русский' },
+    { value: 'ko', label: '한국어' }
   ]
 
   // Handling of language changes
   const handleLanguageChange = async (value: string): Promise<void> => {
     await setLanguage(value)
     await i18n.changeLanguage(value)
-    await ipcInvoke('update-language', value)
+    await window.api.utils.updateLanguage(value)
   }
 
   return (
@@ -58,8 +62,8 @@ export function General(): JSX.Element {
               onCheckedChange={async (checked) => {
                 try {
                   await setOpenAtLogin(checked)
-                  await ipcInvoke('update-open-at-login')
-                  await ipcInvoke('update-tray-config')
+                  await window.api.utils.updateOpenAtLogin()
+                  await window.api.utils.updateTrayConfig()
                 } catch (error) {
                   console.error('Failed to update settings:', error)
                 }
@@ -121,7 +125,7 @@ export function General(): JSX.Element {
               value={quitToTray.toString()}
               onValueChange={async (value) => {
                 await setQuitToTray(value === 'true')
-                await ipcInvoke('update-tray-config')
+                await window.api.utils.updateTrayConfig()
               }}
             >
               <SelectTrigger className={cn('w-[200px]')}>
@@ -135,6 +139,17 @@ export function General(): JSX.Element {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Run game behavior */}
+          <div className={cn('whitespace-nowrap select-none self-center')}>
+            {t('general.hideWindowAfterGameStart')}
+          </div>
+          <div className={cn('flex justify-end')}>
+            <Switch
+              checked={hideWindowAfterGameStart}
+              onCheckedChange={(checked) => setHideWindowAfterGameStart(checked)}
+            />
           </div>
         </div>
       </CardContent>

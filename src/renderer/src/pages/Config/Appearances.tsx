@@ -1,15 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card'
-import { Switch } from '@ui/switch'
-import { Slider } from '@ui/slider'
 import { Button } from '@ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@ui/card'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@ui/hover-card'
-import { useConfigState } from '~/hooks'
-import { useTranslation } from 'react-i18next'
-import { cn } from '~/utils'
-import { ipcInvoke } from '~/utils/ipc'
-import { useAttachmentStore } from '~/stores'
+import { Slider } from '@ui/slider'
+import { Switch } from '@ui/switch'
 import { debounce } from 'lodash'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useConfigState } from '~/hooks'
+import { useAttachmentStore } from '~/stores'
+import { cn } from '~/utils'
 
 export function Appearances(): JSX.Element {
   const { t } = useTranslation('config')
@@ -26,6 +25,9 @@ export function Appearances(): JSX.Element {
   const [showThemeSwitchInSidebar, setShowThemeSwitchInSidebar] = useConfigState(
     'appearances.sidebar.showThemeSwitcher'
   )
+  const [showNSFWBlurSwitchInSidebar, setShowNSFWBlurSwitchInSidebar] = useConfigState(
+    'appearances.sidebar.showNSFWBlurSwitcher'
+  )
   const [highlightLocalGames, setHighlightLocalGames] = useConfigState(
     'game.gameList.highlightLocalGames'
   )
@@ -34,13 +36,16 @@ export function Appearances(): JSX.Element {
   const [customBackground, setCustomBackground] = useConfigState(
     'appearances.background.customBackground'
   )
+  const [showPlayButtonOnPoster, setShowPlayButtonOnPoster] = useConfigState(
+    'appearances.showcase.showPlayButtonOnPoster'
+  )
   const [glassBlur, setGlassBlur] = useConfigState('appearances.glass.blur')
   const [glassOpacity, setGlassOpacity] = useConfigState('appearances.glass.opacity')
 
   async function selectBackgroundImage(): Promise<void> {
-    const filePath: string = await ipcInvoke('select-path-dialog', ['openFile'])
+    const filePath: string = await window.api.utils.selectPathDialog(['openFile'])
     if (!filePath) return
-    await ipcInvoke('set-config-background', filePath)
+    await window.api.theme.setConfigBackground(filePath)
   }
 
   const { getAttachmentInfo, setAttachmentError } = useAttachmentStore()
@@ -187,6 +192,21 @@ export function Appearances(): JSX.Element {
               </div>
             </div>
           </div>
+          {/* Showcase Settings */}
+          <div className={cn('space-y-4')}>
+            <div className={cn('border-b pb-2')}>{t('appearances.showcase.title')}</div>
+            <div className={cn('pl-2')}>
+              <div className={cn('grid grid-cols-[1fr_auto] gap-4 items-center')}>
+                <div className={cn('whitespace-nowrap select-none')}>
+                  {t('appearances.showcase.showPlayButtonOnPoster')}
+                </div>
+                <Switch
+                  checked={showPlayButtonOnPoster}
+                  onCheckedChange={(checked) => setShowPlayButtonOnPoster(checked)}
+                />
+              </div>
+            </div>
+          </div>
           {/* Game List Settings */}
           <div className={cn('space-y-4')}>
             <div className={cn('border-b pb-2')}>{t('appearances.gameList.title')}</div>
@@ -254,6 +274,14 @@ export function Appearances(): JSX.Element {
                 <Switch
                   checked={showThemeSwitchInSidebar}
                   onCheckedChange={(checked) => setShowThemeSwitchInSidebar(checked)}
+                />
+
+                <div className={cn('whitespace-nowrap select-none')}>
+                  {t('appearances.sidebar.showNSFWBlurSwitcher')}
+                </div>
+                <Switch
+                  checked={showNSFWBlurSwitchInSidebar}
+                  onCheckedChange={(checked) => setShowNSFWBlurSwitchInSidebar(checked)}
                 />
               </div>
             </div>

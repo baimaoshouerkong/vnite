@@ -11,7 +11,8 @@
     "closeMainPanel": "Close Main Panel",
     "action": "Action",
     "quitApp": "Quit vnite",
-    "minimizeToTray": "Minimize to Tray"
+    "minimizeToTray": "Minimize to Tray",
+    "hideWindowAfterGameStart": "Minimize to tray after game launch"
   },
   "appearances": {
     "title": "Appearances",
@@ -22,6 +23,10 @@
       "selectImage": "Select Image",
       "currentBackground": "Current Background Image",
       "noBackground": "No Background Image Set"
+    },
+    "showcase": {
+      "title": "Showcase",
+      "showPlayButtonOnPoster": "Show Play Button on Poster"
     },
     "glass": {
       "title": "Frosted Glass",
@@ -41,7 +46,8 @@
     },
     "sidebar": {
       "title": "Sidebar",
-      "showThemeSwitcher": "Show Theme Switcher"
+      "showThemeSwitcher": "Show Theme Switcher",
+      "showNSFWBlurSwitcher": "Show NSFW Content Switcher"
     }
   },
   "advanced": {

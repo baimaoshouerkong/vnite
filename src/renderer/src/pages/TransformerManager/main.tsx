@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import { ScrollArea } from '@ui/scroll-area'
-import { Button } from '@ui/button'
-import { Plus, RefreshCw, ListFilter } from 'lucide-react'
-import { Badge } from '@ui/badge'
-import { TransformerRule } from './types'
-import { TransformerItem } from './TransformerItem'
-import { RuleDialog } from './RuleDialog'
-import { EditDialog } from './EditDialog'
-import { DeleteDialog } from './DeleteDialog'
-import { TransformerPresetSelector } from './PresetSelector'
-import { useConfigState } from '~/hooks'
-import { ipcInvoke } from '~/utils'
-import { toast } from 'sonner'
 import { generateUUID, getErrorMessage } from '@appUtils'
+import { Badge } from '@ui/badge'
+import { Button } from '@ui/button'
+import { Card } from '@ui/card'
+import { ScrollArea } from '@ui/scroll-area'
+import { ListFilter, Plus, RefreshCw } from 'lucide-react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import { useConfigState } from '~/hooks'
+import { DeleteDialog } from './DeleteDialog'
+import { EditDialog } from './EditDialog'
+import { TransformerPresetSelector } from './PresetSelector'
+import { RuleDialog } from './RuleDialog'
+import { TransformerItem } from './TransformerItem'
+import { TransformerRule } from './types'
 
 export function TransformerManager(): JSX.Element {
   const { t } = useTranslation('transformer')
@@ -127,9 +127,9 @@ export function TransformerManager(): JSX.Element {
 
   const handleImportTransformer = async (): Promise<void> => {
     try {
-      const filePath = await ipcInvoke('select-path-dialog', ['openFile'])
+      const filePath = await window.api.utils.selectPathDialog(['openFile'])
       if (!filePath) return
-      await ipcInvoke('import-transformer', filePath)
+      await window.api.transformer.importTransformer(filePath)
       toast.success(t('notifications.importSuccess'))
     } catch (error) {
       console.error('Error importing transformer:', error)
@@ -143,11 +143,31 @@ export function TransformerManager(): JSX.Element {
       id: 'transform-all'
     })
     try {
-      await ipcInvoke('transform-all-games', transformers)
+      await window.api.transformer.transformAllGames(transformers.map((t) => t.id))
       toast.success(t('notifications.applySuccess'), { id: 'transform-all' })
     } catch (error) {
       console.error('Error transforming all:', error)
       toast.error(t('notifications.applyError'), { id: 'transform-all' })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleTransformOne = async (transformer: TransformerRule): Promise<void> => {
+    setIsLoading(true)
+    toast.loading(t('notifications.applyOneLoading', { name: transformer.name }), {
+      id: 'transform-one'
+    })
+    try {
+      await window.api.transformer.transformAllGames([transformer.id])
+      toast.success(t('notifications.applyOneSuccess', { name: transformer.name }), {
+        id: 'transform-one'
+      })
+    } catch (error) {
+      console.error(`Error transforming ${transformer.name}:`, error)
+      toast.error(t('notifications.applyOneError', { name: transformer.name }), {
+        id: 'transform-one'
+      })
     } finally {
       setIsLoading(false)
     }
@@ -167,7 +187,7 @@ export function TransformerManager(): JSX.Element {
   }
 
   return (
-    <div className="flex flex-col w-full h-full shadow-inner bg-background/60">
+    <div className="flex flex-col w-full h-full bg-background/60 pt-[20px]">
       <ScrollArea className="px-6">
         <div className="py-[34px]">
           {/* Title */}
@@ -177,7 +197,7 @@ export function TransformerManager(): JSX.Element {
 
           <div className="grid grid-cols-1 gap-4">
             {/* Status card */}
-            <div className="p-4 border rounded-lg bg-card/45">
+            <Card className="p-4 border rounded-lg">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 {/* Left side: Status and quantity information */}
                 <div className="flex flex-wrap items-center gap-4">
@@ -213,10 +233,10 @@ export function TransformerManager(): JSX.Element {
                   </Button>
                 </div>
               </div>
-            </div>
+            </Card>
 
             {/* Transformer list and operation card */}
-            <div className="flex flex-col flex-grow overflow-hidden border rounded-lg bg-card/45">
+            <Card className="flex flex-col flex-grow border rounded-lg">
               {/* Transformer list header bar */}
               <div className="flex items-center justify-between p-4 border-b bg-muted/45">
                 <div className="text-sm font-medium">{t('list.title')}</div>
@@ -247,6 +267,8 @@ export function TransformerManager(): JSX.Element {
                         transformer={transformer}
                         index={index}
                         totalCount={transformers.length}
+                        isTransforming={isLoading}
+                        handleTransform={handleTransformOne}
                         onRuleClick={handleRuleClick}
                         onEditClick={handleEditClick}
                         onDeleteClick={handleDeleteClick}
@@ -269,7 +291,7 @@ export function TransformerManager(): JSX.Element {
                   </div>
                 )}
               </div>
-            </div>
+            </Card>
           </div>
 
           {/* Dialog components */}

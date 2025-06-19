@@ -1,37 +1,66 @@
-import { cn } from '~/utils'
-import { useGameState } from '~/hooks'
-import { useState, useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
+import { Button } from '@ui/button'
 import { GameImage } from '@ui/game-image'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs'
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger
-} from '@ui/context-menu'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useConfigState, useGameState } from '~/hooks'
+import { cn } from '~/utils'
+import { Header } from './Header'
+import { Memory } from './Memory'
 import { Overview } from './Overview'
 import { Record } from './Record'
 import { Save } from './Save'
-import { Memory } from './Memory'
-import { Header } from './Header'
+import { useGameDetailStore } from './store'
+import { ScrollArea } from '../ui/scroll-area'
 
 export function Game({ gameId }: { gameId: string }): JSX.Element {
   const { t } = useTranslation('game')
   const [_isImageError, setIsImageError] = useState(false)
   const headerRef = useRef<HTMLDivElement>(null)
+  const scrollAreaRef = useRef<HTMLDivElement>(null)
   const [scrollY, setScrollY] = useState(0)
   const [dragging, setDragging] = useState(false)
   const offset = useRef({ x: 0, y: 0 })
   const logoRef = useRef<HTMLDivElement>(null)
 
+  const isEditingLogo = useGameDetailStore((state) => state.isEditingLogo)
+  const setIsEditingLogo = useGameDetailStore((state) => state.setIsEditingLogo)
+
   // Game settings-related state
-  const initialPosition = { x: 2, y: 22 }
+  const initialPosition = { x: 1.5, y: 24 }
   const initialSize = 100
+  const [nsfw] = useGameState(gameId, 'apperance.nsfw')
+  const [enableNSFWBlur] = useConfigState('appearances.enableNSFWBlur')
   const [logoPosition, setLogoPosition] = useGameState(gameId, 'apperance.logo.position')
   const [logoSize, setLogoSize] = useGameState(gameId, 'apperance.logo.size')
   const [logoVisible, setLogoVisible] = useGameState(gameId, 'apperance.logo.visible')
+
+  const [localLogoPosition, setLocalLogoPosition] = useState(initialPosition)
+
+  useEffect(() => {
+    setLocalLogoPosition(logoPosition)
+  }, [logoPosition])
+
+  const handleMouseMove = (e: MouseEvent): void => {
+    if (dragging && logoRef.current) {
+      setLocalLogoPosition({
+        x: ((e.clientX - offset.current.x) * 100) / window.innerWidth,
+        y: ((e.clientY - offset.current.y) * 100) / window.innerHeight
+      })
+    }
+  }
+
+  const handleMouseUp = async (): Promise<void> => {
+    if (dragging) {
+      await setLogoPosition(localLogoPosition)
+    }
+    setDragging(false)
+  }
+
+  const handleReset = async (): Promise<void> => {
+    setLocalLogoPosition(initialPosition)
+    await setLogoPosition(initialPosition)
+  }
 
   // Logo-related handler functions
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>): void => {
@@ -49,41 +78,31 @@ export function Game({ gameId }: { gameId: string }): JSX.Element {
     if (e.button === 0) {
       setDragging(true)
       offset.current = {
-        x: e.clientX - (logoPosition.x * window.innerWidth) / 100,
-        y: e.clientY - (logoPosition.y * window.innerHeight) / 100
+        x: e.clientX - (localLogoPosition.x * window.innerWidth) / 100,
+        y: e.clientY - (localLogoPosition.y * window.innerHeight) / 100
       }
     }
   }
 
-  const handleMouseMove = (e: MouseEvent): void => {
-    if (dragging && logoRef.current) {
-      setLogoPosition({
-        x: ((e.clientX - offset.current.x) * 100) / window.innerWidth,
-        y: ((e.clientY - offset.current.y) * 100) / window.innerHeight
-      })
-    }
-  }
-
-  const handleMouseUp = (): void => {
-    setDragging(false)
-  }
-
-  const handleReset = (): void => {
-    setLogoPosition(initialPosition)
-  }
-
   // Scroll handling
   useEffect(() => {
-    const handleScroll = (e: any): void => {
-      const scrollContainer = e.target
-      setScrollY(scrollContainer.scrollTop)
+    if (!scrollAreaRef.current) return
+
+    const viewportElement = scrollAreaRef.current.querySelector('[class*="h-full w-full"]')
+
+    if (!viewportElement) {
+      console.error('ScrollArea viewport element not found')
+      return
     }
 
-    const scrollContainer = document.querySelector('.scrollbar-base')
-    scrollContainer?.addEventListener('scroll', handleScroll)
+    const handleScroll = (): void => {
+      setScrollY((viewportElement as HTMLElement).scrollTop)
+    }
+
+    viewportElement.addEventListener('scroll', handleScroll)
 
     return (): void => {
-      scrollContainer?.removeEventListener('scroll', handleScroll)
+      viewportElement.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
@@ -96,16 +115,13 @@ export function Game({ gameId }: { gameId: string }): JSX.Element {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [dragging])
+  }, [dragging, localLogoPosition])
 
   return (
-    <div className={cn('w-full h-full relative overflow-hidden shadow-inner')}>
+    <div className={cn('w-full h-full relative overflow-hidden')}>
       {/* Background layer - absolute positioning */}
       <div
-        className={cn(
-          'absolute inset-0 w-full h-full overflow-hidden pr-2',
-          'will-change-transform'
-        )}
+        className={cn('absolute inset-0 w-full h-full overflow-hidden', 'will-change-transform')}
         style={{
           transform: `translateY(-${scrollY * 0.4}px)`,
           maskImage: 'linear-gradient(to bottom, black 50%, transparent 85%)'
@@ -115,120 +131,130 @@ export function Game({ gameId }: { gameId: string }): JSX.Element {
           gameId={gameId}
           key={`${gameId}-background-1`}
           type="background"
-          className={cn('w-full h-auto object-cover')}
+          blur={nsfw && enableNSFWBlur}
+          className={cn('w-full h-auto object-cover z-[1]')}
           onError={() => setIsImageError(true)}
           onUpdated={() => setIsImageError(false)}
           fallback={<div className={cn('w-full h-full bg-background/15')} />}
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+          }}
         />
         <GameImage
           gameId={gameId}
           key={`${gameId}-background-2`}
           type="background"
-          flips
-          className={cn('w-full h-auto object-cover')}
+          blur={nsfw && enableNSFWBlur}
+          className={cn('w-full h-full absolute top-0 object-cover z-0')}
+          style={{
+            opacity: 0.9
+          }}
           onError={() => setIsImageError(true)}
           onUpdated={() => setIsImageError(false)}
           fallback={<div className={cn('w-full h-full bg-background/15')} />}
         />
       </div>
 
-      {/* Logo layer */}
-      {logoVisible && (
-        <ContextMenu>
-          <ContextMenuTrigger asChild>
-            <div
-              ref={logoRef}
-              onMouseDown={handleMouseDown}
-              onWheel={handleWheel}
-              style={{
-                transform: `translateY(-${scrollY * 0.7}px) scale(${logoSize / 100})`,
-                left: `${logoPosition.x}vw`,
-                top: `${logoPosition.y}vh`,
-                cursor: dragging ? 'grabbing' : 'grab',
-                transformOrigin: 'center center'
-              }}
-              className={cn('absolute', 'will-change-transform', 'z-10')}
-            >
-              <GameImage
-                gameId={gameId}
-                key={`${gameId}-logo`}
-                type="logo"
-                className={cn('w-auto max-h-[15vh] object-contain')}
-                fallback={<div className={cn('')} />}
-              />
-            </div>
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem onClick={handleReset}>
-              {t('detail.logoContextMenu.resetPosition')}
-            </ContextMenuItem>
-            <ContextMenuItem onClick={() => setLogoSize(initialSize)}>
-              {t('detail.logoContextMenu.resetSize')}
-            </ContextMenuItem>
-            <ContextMenuItem
+      {/* Logo editing control panel - displayed when in edit mode */}
+      {isEditingLogo && (
+        <div
+          className={cn(
+            'absolute top-[10px] left-[10px] z-40 bg-transparent p-3 rounded-lg flex gap-3'
+          )}
+        >
+          <Button
+            variant={'default'}
+            className={cn('bg-primary hover:bg-primary/95')}
+            onClick={handleReset}
+          >
+            {t('detail.logoManagePanel.resetPosition')}
+          </Button>
+          <Button
+            variant={'default'}
+            className={cn('bg-primary hover:bg-primary/95')}
+            onClick={() => setLogoSize(initialSize)}
+          >
+            {t('detail.logoManagePanel.resetSize')}
+          </Button>
+          {logoVisible ? (
+            <Button
+              variant={'default'}
+              className={cn('bg-primary hover:bg-primary/95')}
               onClick={() => {
                 setLogoVisible(false)
-                toast.info(t('detail.notifications.logoHidden'))
               }}
             >
-              {t('detail.logoContextMenu.hideLogo')}
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
+              {t('detail.logoManagePanel.hideLogo')}
+            </Button>
+          ) : (
+            <Button
+              variant={'default'}
+              className={cn('bg-primary hover:bg-primary/95')}
+              onClick={() => {
+                setLogoVisible(true)
+              }}
+            >
+              {t('detail.logoManagePanel.showLogo')}
+            </Button>
+          )}
+          <Button
+            variant={'default'}
+            className={cn('bg-primary hover:bg-primary/95')}
+            onClick={() => setIsEditingLogo(false)}
+          >
+            {t('utils:common.confirm')}
+          </Button>
+        </div>
+      )}
+
+      {/* Logo layer */}
+      {logoVisible && (
+        <div
+          ref={logoRef}
+          onMouseDown={handleMouseDown}
+          onWheel={handleWheel}
+          style={{
+            transform: `translateY(-${scrollY * 0.7}px) scale(${logoSize / 100})`,
+            left: `${localLogoPosition.x}vw`,
+            top: `${localLogoPosition.y}vh`,
+            cursor: dragging ? 'grabbing' : 'grab',
+            transformOrigin: 'center center',
+            zIndex: isEditingLogo ? 30 : 10 // elevated z-index in edit mode
+          }}
+          className={cn('absolute', 'will-change-transform')}
+        >
+          <GameImage
+            gameId={gameId}
+            key={`${gameId}-logo`}
+            type="logo"
+            className={cn('w-auto max-h-[15vh] object-contain')}
+            fallback={<div className={cn('')} />}
+          />
+        </div>
       )}
 
       {/* Scrollable content area */}
-      <div
-        className={cn(
-          'relative h-full w-full overflow-auto scrollbar-base scrollbar-track-background rounded-none'
-        )}
+      <ScrollArea
+        ref={scrollAreaRef}
+        className={cn('relative h-full w-full overflow-auto rounded-none')}
       >
-        {/* Top space */}
-        <div className="relative h-[40vh]">
-          {/* Left side gradient blur */}
-          <div
-            className={cn(
-              'absolute top-0 bottom-0 left-0 w-[50px] bg-gradient-to-r from-background/[0.7] to-transparent',
-              'backdrop-blur-xl'
-            )}
-            style={{
-              maskImage: 'linear-gradient(to right, black, transparent)',
-              WebkitMaskImage: 'linear-gradient(to right, black, transparent)'
-            }}
-          ></div>
-
-          {/* Right side gradient blur */}
-          <div
-            className={cn(
-              'absolute top-0 bottom-0 right-0 w-[50px] bg-gradient-to-l from-background/[0.7] to-transparent',
-              'backdrop-blur-xl'
-            )}
-            style={{
-              maskImage: 'linear-gradient(to left, black, transparent)',
-              WebkitMaskImage: 'linear-gradient(to left, black, transparent)'
-            }}
-          ></div>
-        </div>
-
         {/* Content container */}
         <div
-          className={cn(
-            'relative z-20 flex flex-col w-full bg-background/[0.85] min-h-[calc(60vh-30px)] backdrop-blur-[var(--glass-blur)]'
-          )}
+          className={cn('relative z-20 flex flex-col w-full min-h-[100vh]')}
+          style={{
+            background:
+              'linear-gradient(to bottom, transparent 0%, hsl(var(--background) / 0.95) 63vh, hsl(var(--background) / 0.95) 100%)'
+          }}
         >
           {/* Header area */}
-          <div ref={headerRef}>
+          <div ref={headerRef} className="mt-[40vh]">
             <Header gameId={gameId} />
           </div>
 
           {/* Content area */}
-          <div className={cn('p-7 pt-0')}>
+          <div className={cn('p-7 pt-0 h-full')}>
             <Tabs defaultValue="overview" className={cn('w-full')}>
-              <TabsList
-                className={cn(
-                  'w-[500px] shadow-md bg-accent/[0.2] justify-start border-border/[0.5] border'
-                )}
-              >
+              <TabsList className={cn('w-[500px] justify-start')}>
                 <TabsTrigger className={cn('w-1/4')} value="overview">
                   {t('detail.tabs.overview')}
                 </TabsTrigger>
@@ -258,7 +284,7 @@ export function Game({ gameId }: { gameId: string }): JSX.Element {
             </Tabs>
           </div>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   )
 }

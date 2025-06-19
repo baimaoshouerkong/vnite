@@ -21,7 +21,8 @@
     },
     "recent": {
       "title": "最近遊戲",
-      "hide": "隱藏"
+      "hide": "隱藏",
+      "empty": "暫無最近遊戲"
     },
     "filter": {
       "results": "篩選結果",
@@ -81,9 +82,7 @@
       }
     },
     "gameCard": {
-      "playTime": "遊戲時間 {{time, gameTime}}",
       "noPlayRecord": "暫無遊玩記錄",
-      "lastRunAt": "最後執行於 {{date, niceDate}}",
       "neverRun": "從未執行過",
       "playRecord": "遊玩記錄",
       "totalPlayTime": "總遊戲時長：{{time, gameTime}}",
@@ -106,13 +105,11 @@
       "save": "存檔",
       "memory": "回憶"
     },
-    "logoContextMenu": {
+    "logoManagePanel": {
       "resetPosition": "重設位置",
       "resetSize": "重設大小",
-      "hideLogo": "隱藏徽標"
-    },
-    "notifications": {
-      "logoHidden": "可在 遊戲設定-管理 中復原徽標顯示"
+      "hideLogo": "隱藏徽標",
+      "showLogo": "顯示徽標"
     },
     "header": {
       "playStatus": {
@@ -309,7 +306,7 @@
     "manage": {
       "title": "管理",
       "rename": "重新命名",
-      "showLogo": "顯示徽標",
+      "editLogo": "編輯徽標",
       "editPlayTime": "修改遊玩時間",
       "downloadMetadata": "下載資料資料",
       "createShortcut": "建立捷徑",
@@ -319,7 +316,9 @@
         "shortcutCreated": "已建立捷徑",
         "shortcutError": "建立捷徑時出錯",
         "gamePathNotSet": "遊戲路徑未設定"
-      }
+      },
+      "unmarkNSFW": "取消標記為 NSFW",
+      "markNSFW": "標記為 NSFW"
     },
     "deleteAlert": {
       "title": "確定要刪除遊戲 {{gameName}} 嗎？",

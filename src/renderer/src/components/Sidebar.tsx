@@ -1,30 +1,29 @@
-import { Nav } from '@ui/nav'
-import { cn } from '~/utils'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@ui/tooltip'
 import { Button } from '@ui/button'
-import { toast } from 'sonner'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuPortal,
   DropdownMenuSub,
   DropdownMenuSubContent,
-  DropdownMenuSubTrigger
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger
 } from '@ui/dropdown-menu'
+import { Nav } from '@ui/nav'
 import { Popover, PopoverContent, PopoverTrigger } from '@ui/popover'
-import { useGameAdderStore } from '~/pages/GameAdder/store'
-import { useGameBatchAdderStore, Game } from '~/pages/GameBatchAdder/store'
-import { ipcInvoke } from '~/utils'
-import { useConfigLocalState, useConfigState } from '~/hooks'
-import { useCloudSyncStore } from '../pages/Config/CloudSync/store'
-import { useSteamImporterStore } from '~/pages/Importer/SteamImporter/store'
-import { CloudSyncInfo } from '../pages/Config/CloudSync/Info'
-import { useTheme } from './ThemeProvider'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@ui/tooltip'
 import { useTranslation } from 'react-i18next'
-import { useGameScannerStore } from '~/pages/GameScannerManager/store'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { useConfigLocalState, useConfigState } from '~/hooks'
+import { useGameAdderStore } from '~/pages/GameAdder/store'
+import { useGameBatchAdderStore } from '~/pages/GameBatchAdder/store'
+import { useGameScannerStore } from '~/pages/GameScannerManager/store'
+import { useSteamImporterStore } from '~/pages/Importer/SteamImporter/store'
+import { cn } from '~/utils'
+import { CloudSyncInfo } from '../pages/Config/CloudSync/Info'
+import { useCloudSyncStore } from '../pages/Config/CloudSync/store'
+import { useTheme } from './ThemeProvider'
 
 export function Sidebar(): JSX.Element {
   const navigate = useNavigate()
@@ -35,16 +34,28 @@ export function Sidebar(): JSX.Element {
   const [cloudSyncEnabled] = useConfigLocalState('sync.enabled')
   const { toggleTheme, isDark } = useTheme()
   const [showThemeSwitchInSidebar] = useConfigState('appearances.sidebar.showThemeSwitcher')
+  const [showNSFWBlurSwitchInSidebar] = useConfigState('appearances.sidebar.showNSFWBlurSwitcher')
+  const [enableNSFWBlur, setEnableNSFWBlur] = useConfigState('appearances.enableNSFWBlur')
   const setEditingScanner = useGameScannerStore((state) => state.setEditingScanner)
   const { t } = useTranslation('sidebar')
 
   return (
     <div
       className={cn(
-        'flex flex-col p-[10px] h-full bg-background/70 border-r border-border justify-between'
+        'flex flex-col p-[10px] h-full bg-background/60 border-r border-border justify-between'
       )}
     >
       <div className={cn('flex flex-col gap-2')}>
+        <div
+          className={cn(
+            'font-mono text-2xl font-bold flex justify-center items-center text-primary non-draggable cursor-pointer'
+          )}
+          onClick={() => {
+            navigate(-1)
+          }}
+        >
+          V
+        </div>
         <Tooltip>
           <TooltipTrigger>
             <Nav variant="sidebar" to="./library">
@@ -79,6 +90,27 @@ export function Sidebar(): JSX.Element {
         </Tooltip>
       </div>
       <div className={cn('flex flex-col gap-2')}>
+        {showNSFWBlurSwitchInSidebar && (
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="ghost"
+                size={'icon'}
+                className={cn('min-h-0 min-w-0 p-2 non-draggable')}
+                onClick={() => setEnableNSFWBlur(!enableNSFWBlur)}
+              >
+                {enableNSFWBlur ? (
+                  <span className={cn('icon-[mdi--eye-off-outline] w-6 h-6')}></span>
+                ) : (
+                  <span className={cn('icon-[mdi--eye-outline] w-6 h-6')}></span>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {enableNSFWBlur ? t('actions.disableNSFWBlur') : t('actions.enableNSFWBlur')}
+            </TooltipContent>
+          </Tooltip>
+        )}
         {showThemeSwitchInSidebar && (
           <Tooltip>
             <TooltipTrigger>
@@ -187,7 +219,7 @@ export function Sidebar(): JSX.Element {
                       toast.promise(
                         (async (): Promise<void> => {
                           try {
-                            const result = (await ipcInvoke('get-batch-game-adder-data')) as Game[]
+                            const result = await window.api.adder.getBatchGameAdderData()
 
                             if (!Array.isArray(result)) {
                               throw new Error(t('notifications.unknownError'))
@@ -227,13 +259,13 @@ export function Sidebar(): JSX.Element {
                     onClick={async () => {
                       try {
                         toast.info(t('notifications.selectGamePath'))
-                        const gamePath = await ipcInvoke('select-path-dialog', ['openFile'])
+                        const gamePath = await window.api.utils.selectPathDialog(['openFile'])
                         if (!gamePath) {
                           return
                         }
                         toast.promise(
                           (async (): Promise<void> => {
-                            await ipcInvoke('add-game-to-db-without-metadata', gamePath)
+                            await window.api.adder.addGameToDbWithoutMetadata(gamePath)
                           })(),
                           {
                             loading: t('notifications.adding'),

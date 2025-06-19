@@ -1,13 +1,13 @@
-import { GameDBManager } from './game'
-import { ConfigDBManager } from './config'
-import { GameMetadata, GameTagsList, GameDescriptionList, GameExtraInfoList } from '@appTypes/utils'
-import i18next from 'i18next'
+import { configDocs } from '@appTypes/database'
+import { GameDescriptionList, GameExtraInfoList, GameMetadata, GameTagsList } from '@appTypes/utils'
+import { generateUUID } from '@appUtils'
 import log from 'electron-log/main'
 import fse from 'fs-extra'
-import { configDocs } from '@appTypes/database'
-import { z } from 'zod'
+import i18next from 'i18next'
 import path from 'path'
-import { generateUUID } from '@appUtils'
+import { z } from 'zod'
+import { ConfigDBManager } from './config'
+import { GameDBManager } from './game'
 
 /**
  * Metadata transformer module, processes game metadata transformations
@@ -19,7 +19,10 @@ export class Transformer {
    * @param metadata Game metadata object to transform
    * @returns Transformed game metadata
    */
-  static async transformMetadata(metadata: GameMetadata): Promise<GameMetadata> {
+  static async transformMetadata(
+    metadata: GameMetadata,
+    transformerIds: string[] | '#all'
+  ): Promise<GameMetadata> {
     try {
       // Get transformer enabled status and configuration list
       const enabled = await ConfigDBManager.getConfigValue('metadata.transformer.enabled')
@@ -32,12 +35,19 @@ export class Transformer {
       if (!transformerList || transformerList.length === 0) {
         return metadata
       }
+      let activeTransformers = [] as configDocs['metadata']['transformer']['list']
+      if (transformerIds === '#all') {
+        // If transformerIds is '#all', use all transformers
+        activeTransformers = transformerList
+      } else {
+        activeTransformers = transformerList.filter((t) => transformerIds.includes(t.id))
+      }
 
       // Create deep copy to avoid modifying the original object
       const transformedMetadata: GameMetadata = JSON.parse(JSON.stringify(metadata))
 
       // Apply rules from all transformers
-      for (const transformer of transformerList) {
+      for (const transformer of activeTransformers) {
         // Process basic fields
         this.applyProcessorRules(transformedMetadata, 'name', transformer.processors.name)
         this.applyProcessorRules(
@@ -283,7 +293,7 @@ export class Transformer {
     }
     // Process string array type fields
     else if (Array.isArray(metadata[field])) {
-      metadata[field] = metadata[field]
+      const processedArray = metadata[field]
         .map((item: string) => {
           if (typeof item !== 'string') return item
 
@@ -298,6 +308,9 @@ export class Transformer {
         })
         // Filter out empty values
         .filter((item: any) => item !== null && item !== undefined)
+
+      // Deduplicate
+      metadata[field] = [...new Set(processedArray)]
     }
   }
 
@@ -306,7 +319,7 @@ export class Transformer {
    * @param gameId The game ID for which to transform metadata
    * @returns Returns true if successful, false if failed
    */
-  static async transformGameById(gameId: string): Promise<boolean> {
+  static async transformGameById(gameId: string, transformerIds: string[]): Promise<boolean> {
     try {
       const game = await GameDBManager.getGame(gameId)
       if (!game) {
@@ -329,7 +342,7 @@ export class Transformer {
       }
 
       // Transform metadata
-      const transformedMetadata = await this.transformMetadata(metadata)
+      const transformedMetadata = await this.transformMetadata(metadata, transformerIds)
 
       // Compare original and transformed metadata
       if (JSON.stringify(metadata) === JSON.stringify(transformedMetadata)) {
@@ -352,7 +365,7 @@ export class Transformer {
    * Transform metadata for all games and save directly to the database
    * @returns Number of successfully transformed games
    */
-  static async transformAllGames(): Promise<number> {
+  static async transformAllGames(transformerIds: string[]): Promise<number> {
     try {
       const allGames = await GameDBManager.getAllGames()
       let successCount = 0
@@ -361,7 +374,7 @@ export class Transformer {
         if (gameId !== 'collections') {
           // Skip special documents
           try {
-            const success = await this.transformGameById(gameId)
+            const success = await this.transformGameById(gameId, transformerIds)
             if (success) {
               successCount++
             }
